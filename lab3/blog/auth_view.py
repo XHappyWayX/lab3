@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import generics, permissions
 from .serializers import UserSerializer
+from rest_framework import status
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -12,8 +13,7 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key, 'user_id': user.pk, 'email': user.email})
-
+        return Response({'token': token.key, 'user_id': user.pk, 'email': user.email}, status=200)
 
 class RegisterUserView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -27,6 +27,7 @@ class RegisterUserView(generics.CreateAPIView):
         token, created = Token.objects.get_or_create(user=user)
         headers = self.get_success_headers(serializer.data)
         return Response({'token': token.key, 'user_id': user.pk, 'email': user.email}, status=201, headers=headers)
+
 
     def perform_create(self, serializer):
         return serializer.save()

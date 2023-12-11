@@ -1,5 +1,6 @@
 from django.urls import path, include
 from blog import views
+from rest_framework.authtoken import views as auth_views
 from .auth_view import CustomAuthToken, RegisterUserView
 urlpatterns = [
     path('Post/', views.PostList.as_view()),
@@ -8,4 +9,5 @@ urlpatterns = [
     path('Comment/<int:module2_id>/', views.CommentDetail.as_view()),
     path('api-token-auth/', CustomAuthToken.as_view(), name='api_token_auth'),
     path('register/', RegisterUserView.as_view(), name='register'),
+
 ]
