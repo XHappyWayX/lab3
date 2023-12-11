@@ -5,8 +5,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAdminUser
 
 class PostList(APIView):
+    permission_classes = [IsAdminUser]
     @swagger_auto_schema(responses={200: PostSerializer(many=True)})
     def get(self, request, *args, **kwargs):
         module1_objects = Post.objects.all()
@@ -23,6 +25,7 @@ class PostList(APIView):
 
 
 class PostDetail(APIView):
+    permission_classes = [IsAdminUser]
     def get(self, request, module1_id, *args, **kwargs):
         module1_object = get_object_or_404(Post, id=module1_id)
         serializer = PostSerializer(module1_object)
@@ -43,6 +46,7 @@ class PostDetail(APIView):
 
 
 class CommentList(APIView):
+    permission_classes = [IsAdminUser]
     @swagger_auto_schema(responses={200: CommentSerializer(many=True)})
     def get(self, request, *args, **kwargs):
         module2_objects = Comment.objects.all()
@@ -59,6 +63,7 @@ class CommentList(APIView):
 
 
 class CommentDetail(APIView):
+    permission_classes = [IsAdminUser]
     def get(self, request, module1_id, *args, **kwargs):
         module1_object = get_object_or_404(Comment, id=module1_id)
         serializer = CommentSerializer(module1_object)
